@@ -1,12 +1,32 @@
 import React, { useState, useRef, useEffect } from 'react';
 import mapboxgl from "mapbox-gl";
 import lookup from "country-code-lookup"; // npm module to get ISO Code for countries
-// import Popup from './map/popup';
+import styled from 'styled-components';
 
 // Mapbox css - needed to make tooltips work later in this article
 import "mapbox-gl/dist/mapbox-gl.css";
 
 mapboxgl.accessToken = "pk.eyJ1IjoiYWptaXJvMTEiLCJhIjoiY2s4djBtaDQ3MDM0dDNmcXBpNWxvbTN5bCJ9.7sko-vjf0AKOdvVhr5PpJw";
+
+const StyledMapPopup = styled.div`
+  font-size: 14px;
+  font-family: sans-serif;
+  width: 80%;
+  .covid-popover {
+    font-size: 14px;
+    font-family: sans-serif;
+    div{
+      line-height: 1.5;
+    }
+    span {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    strong{
+      text-align: right;
+    }
+  }
+`
 
 const Map = ({ data, mapState, setMapState, isSidebarClose }) => {
     console.log({ data });
@@ -110,8 +130,8 @@ const Map = ({ data, mapState, setMapState, isSidebarClose }) => {
     
             // Create a mapbox popup
             const popup = new mapboxgl.Popup({
-              closeButton: true,
-              closeOnClick: true
+              closeButton: false,
+              closeOnClick: false
             });
     
             // Variable to hold the active country/province on hover
@@ -137,20 +157,22 @@ const Map = ({ data, mapState, setMapState, isSidebarClose }) => {
                   lookup.byCountry(country)?.iso2 || lookup.byInternet(country)?.iso2;
     
                 const provinceHTML =
-                  province !== "null" ? `<p>Province: <b>${province}</b></p>` : "";
+                  province !== "null" ? `Province: <strong>${province}</strong> <br />` : "";
     
                 const mortalityRate = ((deaths / cases) * 100).toFixed(2);
     
                 const countryFlagHTML = Boolean(countryISO)
-                  ? `<img src="https://www.countryflags.io/${countryISO}/flat/64.png"></img>`
+                  ? `<img src="https://www.countryflags.io/${countryISO}/flat/64.png" width="48"></img>`
                   : "";
     
-                const HTML = `<p>Country: <b>${country}</b></p>
+                const HTML = `<div class="covid-popover">
+                  <div>${countryFlagHTML} <span>${country}</span> </div>
                   ${provinceHTML}
-                  <p>Cases: <b>${cases}</b></p>
-                  <p>Deaths: <b>${deaths}</b></p>
-                  <p>Mortality Rate: <b>${mortalityRate}%</b></p>
-                  ${countryFlagHTML}`;
+                  <hr />
+                  <div>Cases: <strong>${cases}</strong> <br />
+                      Deaths: <strong>${deaths}</strong> <br />
+                      Mortality Rate: <strong>${mortalityRate}%</strong> 
+                  </div>`;
     
                 // Ensure that if the map is zoomed out such that multiple
                 // copies of the feature are visible, the popup appears
@@ -188,10 +210,10 @@ const Map = ({ data, mapState, setMapState, isSidebarClose }) => {
     }, [isSidebarClose])
 
     return (
-        <div className="mapContainer" style={mapStyle}>
+        <StyledMapPopup className="mapContainer" style={mapStyle}>
             {/* Assigned Mapbox container */}
             <div className="mapBox" ref={mapboxElRef} />
-      </div>
+        </StyledMapPopup>
     )
 }
 

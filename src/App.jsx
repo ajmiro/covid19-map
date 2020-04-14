@@ -8,6 +8,7 @@ import "./App.scss";
 
 // Mapbox css - needed to make tooltips work later in this article
 import "mapbox-gl/dist/mapbox-gl.css";
+import 'antd/dist/antd.css';
 
 mapboxgl.accessToken = "pk.eyJ1IjoiYWptaXJvMTEiLCJhIjoiY2s4djBtaDQ3MDM0dDNmcXBpNWxvbTN5bCJ9.7sko-vjf0AKOdvVhr5PpJw";
 
@@ -15,25 +16,6 @@ function App() {
   const fetcher = async(url) => 
     fetch(url)
       .then(r => r.json())
-      // .then(data =>
-      //   data.map((point, index) => ({
-      //     type: "Feature",
-      //     geometry: {
-      //       type: "Point",
-      //       coordinates: [
-      //         point.coordinates.longitude,
-      //         point.coordinates.latitude
-      //       ]
-      //     },
-      //     properties: {
-      //       id: index, // unique identifier in this case the index
-      //       country: point.country,
-      //       province: point.province,
-      //       cases: point.stats.confirmed,
-      //       deaths: point.stats.deaths
-      //     }
-      //   }))
-      // );
 
   const [{ data }, setData] = useState(useSWR("https://corona.lmao.ninja/v2/jhucsse", fetcher));
   const [isSidebarClose, setIsSidebarClose ] = useState(false);
