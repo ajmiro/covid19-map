@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Demo is available in https://covid19-map.s3.amazonaws.com/index.html
+
 ## Available Scripts
 
 In the project directory, you can run:
