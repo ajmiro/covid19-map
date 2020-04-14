@@ -34,7 +34,13 @@ const StyleLastUpdated = styled.div`
     color: #eee;
     padding-top: 15px;
 `
-
+/**
+ * TODO: 
+ * - search by country
+ * - combine countries together
+ * - cluster the data
+ * 
+ */
 const Aside = ({ isSidebarClose, onSidebarToggle, data }) => {
     const [cases, setCases] = useState([]);
     const [asideStyle, setAsideStyle] = useState({ width: '20%'})
